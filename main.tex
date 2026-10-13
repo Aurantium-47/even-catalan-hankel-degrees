@@ -1,0 +1,678 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  11pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{hyperref}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdftitle={Exact degrees for even Catalan-power Hankel determinants},
+  pdfauthor={Aurantium},
+  pdfcreator={LaTeX}}
+
+\title{Exact degrees for even Catalan-power\\Hankel determinants}
+\author{Aurantium}
+\date{13 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For integers \(j\ge1\) and \(k\ge2j-1\), the signed Hankel determinant
+sequences formed from the coefficients of the even Catalan power
+\(C(z)^{2k}\), with zero moment shift and matrix sizes \(kn+j\) and
+\(kn+k+1-j\), agree for every \(n\ge0\) with rational polynomials of
+exact degree \((2j-1)(k-j)\). The sign is
+\((-1)^{n\binom{k}{2}}\). A quotient-minor formula gives the degree bound;
+a strictly positive moment determinant proves that its leading term does
+not cancel. We give the full proof, including the boundary cases, and
+exact finite verification code. The result concerns these two offsets
+in the stated parameter range, not arbitrary moment shifts, odd Catalan
+powers, or Narayana-parameter deformations.
+\end{abstract}
+
+\section{Statement and notation}\label{problem}
+
+\subsection{The residue-three case}\label{exact-reconstruction}
+
+Let \[
+ C(z)=\frac{1-\sqrt{1-4z}}{2z},\qquad
+ c_m^{(2k)}=[z^m]C(z)^{2k}
+ =\frac{2k}{2m+2k}\binom{2m+2k}{m},
+\] and \[
+ D_{2k,0}(N)=\det(c_{u+v}^{(2k)})_{0\le u,v<N},\qquad
+ D_{2k,0}(0)=1.
+\] For integers \(k\ge5\), \(n\ge0\), and \(r\in\{3,k-2\}\), set \[
+ f_{k,r}(n)=(-1)^{nK}D_{2k,0}(kn+r),\qquad K=\binom{k}{2}.
+\] The target is the existence of polynomials \(F_{k,r}\in\mathbb Q[n]\)
+such that \[
+ F_{k,r}(n)=f_{k,r}(n)\quad(n\ge0),\qquad
+ \deg F_{k,r}=5(k-3).
+\] At \(k=5\), the two residues are identical. The asserted degree is
+exact, not merely an upper bound. The polynomials are integer-valued on
+the indicated integer arguments; integer coefficients are not asserted.
+
+This is precisely the \(j=3\) specialization of {[}C23, Conjecture 6,
+equation (19){]}, with the sign convention in equation (16). The
+specializations with \(5\le k\le15\) are
+already included in {[}WX19, Theorem 11{]}.
+
+\section{Theorems and proofs}\label{result}
+
+\subsection{1. Resolution and leading
+coefficient}\label{resolution-and-leading-coefficient}
+
+\textbf{Theorem 1.} The target holds for every \(k\ge5\) and every
+\(n\ge0\). Define \[
+ b_m=\frac{2\zeta(2m)}{\pi^{2m}}
+     =\frac{(-1)^{m+1}2^{2m}B_{2m}}{(2m)!}>0\qquad(m\ge1),
+ \tag{1}
+\] where \(u/(e^u-1)=\sum_{m\ge0}B_mu^m/m!\). The leading coefficients
+are \[
+ \boxed{\ [n^{5(k-3)}]F_{k,3}(n)
+ =L_k:=k^{4(k-3)}\bigl(b_{k-4}b_{k-2}-b_{k-3}^{\,2}\bigr)>0,\ }
+ \tag{2}
+\] \[
+ \boxed{\ [n^{5(k-3)}]F_{k,k-2}(n)=(-1)^K L_k.\ }
+ \tag{3}
+\] In particular, there is no unproved noncancellation assumption in the
+degree claim. Strict positivity in (2) is established below.
+
+The proof also extends to every residue pair in the stated range of
+{[}C23, Conjecture 6{]}. Section 7 gives a complete proof of that
+stronger conclusion, not just a proposed extension. No claim of
+publication priority is made.
+
+\subsection{2. Moment functional and a finite determinant
+reduction}\label{moment-functional-and-a-finite-determinant-reduction}
+
+Put \(s=k-1\). Define monic polynomials by \[
+ P_0(x)=1,\quad P_1(x)=x-2,\quad
+ P_{m+1}(x)=(x-2)P_m(x)-P_{m-1}(x).
+ \tag{4}
+\]
+
+\textbf{Lemma 2.1 (moment bridge).} There is a linear functional
+\(\mathcal L\) on \(\mathbb Q[x]\) such that \[
+ \mathcal L(P_aP_b)=\delta_{ab},\qquad
+ c_m^{(2k)}=\mathcal L\bigl(x^m Q(x)\bigr),\qquad
+ Q(x)=x^sP_s(x).
+ \tag{5}
+\] Moreover, \(H_N(\mathcal L):=\det(\mathcal L(x^{u+v}))_{u,v<N}=1\).
+
+\emph{Proof.} Make the \(P_m\) an orthonormal basis of the polynomial
+space. The recurrence (4) says that multiplication by \(x\) is
+symmetric: its matrix has diagonal entries 2 and adjacent off-diagonal
+entries 1. At the boundary, \(xP_0=P_1+2P_0\). Define
+\(\mathcal L(h)=\langle1,h\rangle\). Symmetry of multiplication gives
+\(\langle f,g\rangle=\mathcal L(fg)\), proving orthogonality.
+
+The coefficient of \(P_a\) in \(x^m\) counts nonnegative Motzkin walks
+of length \(m\) from height 0 to height \(a\), with horizontal-step
+weight 2 and both sloping-step weights 1. Let \(G(z)\) be the excursion
+generating function. Decomposition at the first step and first return
+gives \[
+ G=1+2zG+z^2G^2.
+\] This has a unique formal solution with constant coefficient 1. Since
+\(C=1+zC^2\), its solution is \(G=C^2\).
+
+Decomposing a walk ending at height \(s\) at its last upward departures
+from heights \(0,\ldots,s-1\) gives \(s\) up-steps and \(s+1\)
+excursions. Thus \[
+ \sum_{m\ge0}\mathcal L(x^mP_s)z^m=z^sG(z)^{s+1}.
+\] Taking the coefficient of \(z^{m+s}\) proves (5), because \(s+1=k\).
+Finally, the change of basis from monomials to the monic \(P_m\) is unit
+triangular. Their Gram matrix is the identity, so \(H_N(\mathcal L)=1\),
+including the empty determinant. \(\square\)
+
+For any integer \(N\ge0\), let \(\mathcal R(N)\) be the determinant of
+the coefficient vectors of \[
+ P_N,P_{N+1},\ldots,P_{N+2s-1}\pmod Q
+\] in the ordered monomial basis \(1,x,\ldots,x^{2s-1}\).
+
+\textbf{Lemma 2.2 (remainder determinant).} For every \(N\ge0\), \[
+ D_{2k,0}(N)=\mathcal R(N).
+ \tag{6}
+\]
+
+\emph{Proof.} Consider the \((N+2s)\)-column coefficient matrix of \[
+ QP_0,\ldots,QP_{N-1},P_N,\ldots,P_{N+2s-1}.
+\] In the orthonormal \(P\)-basis, its last \(2s\) columns are the
+corresponding unit vectors. Its determinant is therefore
+\(\det(\mathcal L(P_uQP_v))_{u,v<N}=H_N(Q\mathcal L)\). Changing the
+first \(N\) monic basis polynomials to monomials does not change this
+determinant. By Lemma 2.1 it is \(D_{2k,0}(N)\).
+
+For each last column, division by \(Q\) has quotient degree at most
+\(N-1\). Subtract a linear combination of the first \(N\) columns to
+leave its remainder. Move these \(2s\) remainder columns to the front.
+The sign is \((-1)^{2sN}=1\). The resulting matrix has remainder block
+in its upper left, zero lower-left block, and a unit-triangular
+lower-right block. Its determinant is \(\mathcal R(N)\). No nonvanishing
+of \(H_N(Q\mathcal L)\) was assumed. \(\square\)
+
+This reduction is a specialization of the classical
+orthogonal-polynomial moment-modification identity in {[}K21, Theorem 1
+and Proposition 5{]}. The proof above is included to check its
+hypotheses and conventions directly; the reduction itself is not
+asserted to be new.
+
+\subsection{3. Evaluation matrix, polynomiality, and
+reflection}\label{evaluation-matrix-polynomiality-and-reflection}
+
+The roots of \(P_s\) are \[
+ \alpha_i=2+2\cos(i\pi/k),\qquad 1\le i\le s.
+\] They are distinct and strictly positive. In particular they are
+different from zero. Let \[
+ V(\alpha)=\prod_{1\le i<j\le s}(\alpha_j-\alpha_i).
+\] For a polynomial of degree below \(2s\), take its values at the \(s\)
+roots, followed by its coefficients of degrees \(0,\ldots,s-1\). The
+determinant of this linear transformation on the monomial basis is \[
+ V(\alpha)P_s(0)^s\ne0.
+ \tag{7}
+\] Indeed, move the \(s\) coefficient rows to the front. Their block is
+\((I_s\ 0)\); the remaining block in degrees \(s,\ldots,2s-1\) has
+determinant \((\prod_i\alpha_i^s)V(\alpha)\). The row-move sign
+\((-1)^{s^2}\) gives exactly (7), since
+\(P_s(0)=(-1)^s\prod_i\alpha_i\).
+
+A multiple of \(Q=x^sP_s\) is annihilated by all these functionals.
+Consequently, if \(E_N\) is the matrix with columns
+\(P_N,\ldots,P_{N+2s-1}\), root-value rows first and coefficient rows
+second, then \[
+ \mathcal R(N)=\frac{\det E_N}{V(\alpha)P_s(0)^s}.
+ \tag{8}
+\]
+
+Extend (4) to all integer indices. It gives \[
+ P_{-1}=0,\qquad P_{-m-2}=-P_m\quad(m\ge0).
+ \tag{9}
+\] Use the remainder determinant to define \(\mathcal R(N)\) also for
+negative \(N\). This is an algebraic extension, not a negative-size
+Hankel determinant. Two useful identities, valid for integer \(m\), are
+\[
+ P_m(\alpha_i)=\frac{\sin((m+1)i\pi/k)}{\sin(i\pi/k)},\qquad
+ [x^a]P_m(x)=(-1)^{m-a}\binom{m+a+1}{2a+1}.
+ \tag{10}
+\] The binomial in the second identity is the falling-factorial
+polynomial. For nonnegative \(m\), the identities follow from (4) and
+its initial conditions. For negative \(m\), they follow from (9) and
+\(\binom{-u}{v}=(-1)^v\binom{u+v-1}{v}\); the index \(-1\) gives zero.
+
+\textbf{Lemma 3.1.} For any fixed integer residue \(r\), \[
+ (-1)^{nK}\mathcal R(kn+r)\quad(n\in\mathbb Z)
+\] is the restriction of a polynomial \(F_{k,r}\in\mathbb Q[n]\) of
+degree at most \(s^2\).
+
+\emph{Proof.} By (10), root row \(i\) of \(E_{kn+r}\) has a common
+factor \((-1)^{ni}\). Their product is \((-1)^{nK}\). Removing it makes
+the root rows constant in \(n\).
+
+Coefficient row \(a\), \(0\le a<s\), has a common sign \((-1)^{kn}\);
+after removing it, each entry is a polynomial of degree at most
+\(2a+1\). The product of these signs is 1, because \(kns=k(k-1)n\) is
+even. The determinant in (8) thus has degree at most
+\(\sum_{a=0}^{s-1}(2a+1)=s^2\). It agrees with the signed remainder
+determinant at every integer \(n\), including negative integers. Its
+coefficients are rational: its values at any \(s^2+1\) distinct integers
+are integers, and the corresponding Vandermonde interpolation system is
+over \(\mathbb Q\). \(\square\)
+
+\textbf{Lemma 3.2 (reflection).} As polynomial identities, \[
+ F_{k,k+1-r}(n)=(-1)^{s+K}F_{k,r}(-n-3).
+ \tag{11}
+\]
+
+\emph{Proof.} Reverse the \(2s\) columns and apply (9). The \(2s\)
+individual minus signs cancel, and reversal has sign \((-1)^s\).
+Therefore \[
+ \mathcal R(-N-2s-1)=(-1)^s\mathcal R(N).
+\] If \(N=kn+r\), its reflected index is \[
+ -N-2s-1=k(-n-3)+(k+1-r).
+\] Combining the two signing factors gives \((-1)^{s+K}\). Lemma 3.1
+promotes the identity on integer arguments to the polynomial identity
+(11). \(\square\)
+
+\subsection{4. The residue-3 quotient
+identity}\label{the-residue-3-quotient-identity}
+
+For \(n\ge0\), write \[
+ N=kn+3,\qquad M=k(n+1),\qquad
+ p(x)=P_{M-1}(x),\quad q(x)=P_{M+k-1}(x),
+\] \[
+ \frac{q(x)}{p(x)}=\sum_{a\ge0}h_a(k,M)x^a.
+ \tag{12}
+\] The quotient is a well-defined formal series because
+\(p(0)=(-1)^{M-1}M\ne0\).
+
+\textbf{Lemma 4.1.} For every \(k\ge5\) and \(n\ge0\), \[
+ \boxed{\ F_{k,3}(n)=-(n+1)^s
+ \left(h_{s-2}(k,M)^2-h_{s-3}(k,M)h_{s-1}(k,M)\right).\ }
+ \tag{13}
+\]
+
+\emph{Proof.} Let \(\ell=M-1=kn+s\). In the column window
+\(P_N,\ldots,P_{N+2s-1}\), replace the columns with leading indices
+\(\ell,\ldots,\ell+s-3\) by \[
+ p,xp,\ldots,x^{s-3}p.
+\] These are determinant-preserving triangular column operations.
+Specifically,
+\(x^aP_\ell=P_{\ell+a}+\text{a combination of }P_{\ell-a},\ldots,P_{\ell+a-1}\),
+and \(\ell-a\ge N\) for \(a\le s-3\).
+
+The final two original columns are \(q=P_{kn+2s+1}\) and
+\(P_{kn+2s+2}\). Replace the latter by \[
+ xq=P_{kn+2s+2}+2P_{kn+2s+1}+P_{kn+2s}.
+\] This is again determinant-preserving. Both \(p\) and \(q\) vanish at
+every \(\alpha_i\), because their indices plus one are multiples of
+\(k\).
+
+The \(s\) columns which remain nonzero in root rows are \[
+ P_{kn+3},\ldots,P_{kn+s-1},\quad
+ P_{kn+2s-2},P_{kn+2s-1},P_{kn+2s}.
+\] After removing row factors \((-1)^{ni}\), these become \[
+ P_3,\ldots,P_{s-1},-P_2,-P_1,-P_0.
+\] Their root determinant is \((-1)^{s-3}V(\alpha)\). To see the sign
+explicitly: there are three minus signs, \(3(s-3)\) crossings to move
+the last three polynomials to the front, and three crossings to reverse
+their order.
+
+Moving the three right-hand root columns across the \(s-2\) columns made
+from \(p\) has sign \((-1)^{3(s-2)}\). Multiplying these two signs gives
+\((-1)^{s-3+3(s-2)}=-1\). After all root columns have been put first,
+the lower-right coefficient block has columns \[
+ p,xp,\ldots,x^{s-3}p,\ q,xq.
+\]
+
+Multiply the truncated coefficient vectors by \(1/p\), modulo \(x^s\).
+The determinant of this multiplication is \(p(0)^{-s}\), since its
+matrix is triangular. The first \(s-2\) columns become the corresponding
+coordinate vectors, leaving the minor \[
+ \begin{vmatrix}
+ h_{s-2}&h_{s-3}\\
+ h_{s-1}&h_{s-2}
+ \end{vmatrix}.
+\] The denominator in (8) supplies \(P_s(0)^s\), and \[
+ \left(\frac{p(0)}{P_s(0)}\right)^s
+ =\left((-1)^{kn}(n+1)\right)^s=(n+1)^s.
+\] The root-row sign is exactly the one already removed in the
+definition of \(F_{k,3}\). This proves (13), including \(n=0\).
+\(\square\)
+
+\subsection{5. Exact degree and strict
+noncancellation}\label{exact-degree-and-strict-noncancellation}
+
+The classical partial fraction expansion of cotangent {[}DLMF, 4.22.3{]}
+is \[
+ \cot u=\frac1u+2u\sum_{\nu\ge1}\frac1{u^2-\pi^2\nu^2}.
+\] Expanding for \(0<|u|<\pi\) gives \[
+ \cot u=\frac1u-\sum_{a\ge1}b_a u^{2a-1},\qquad
+ b_a=2\sum_{\nu\ge1}(\pi\nu)^{-2a}.
+ \tag{14}
+\] The expansion and interchange of sums are justified by absolute
+uniform convergence on compact subdisks of radius below \(\pi\), after
+removal of the simple pole. The Bernoulli expression (1) is the
+equivalent Laurent coefficient formula {[}DLMF, 4.19.6{]}.
+
+\textbf{Lemma 5.1.} For fixed \(k\) and every \(a\ge1\), \(h_a(k,M)\) is
+a Laurent polynomial in \(M\) with no exponent below \(-1\), with degree
+\(2a-1\), and \[
+ [M^{2a-1}]h_a(k,M)=(-1)^{k+1}k b_a.
+ \tag{15}
+\]
+
+\emph{Proof.} Make the formal substitution \[
+ x=2-2\cos\theta=\theta^2+O(\theta^4).
+\] More precisely, \(\theta^2\) is the unique series in
+\(x\mathbb Q[[x]]\) inverting this substitution, and has leading
+coefficient 1. From (4), \[
+ P_m(2-2\cos\theta)=(-1)^m
+       \frac{\sin((m+1)\theta)}{\sin\theta}.
+\] Consequently (12) gives \[
+ \frac{q}{p}=(-1)^k\frac{\sin((M+k)\theta)}{\sin(M\theta)}
+ =(-1)^k\left(\cos(k\theta)+\sin(k\theta)\cot(M\theta)\right).
+ \tag{16}
+\] This identity holds for the positive integer values of \(M\) used in
+the Hankel determinant, and its right side defines the required
+coefficient extension in the formal ring \(\mathbb Q[M,M^{-1}][[x]]\).
+
+In (14), the pole contributes only a term proportional to \(M^{-1}\).
+The cosine contributes a term independent of \(M\). For the coefficient
+of \(x^a\), only cotangent terms indexed by \(1\le v\le a\) can
+contribute, because \(\sin(k\theta)\theta^{2v-1}\) starts with
+\(k\theta^{2v}\). Thus the possible exponents of \(M\) are
+\(-1,0,1,3,\ldots,2a-1\). The highest one comes only from \(v=a\), and
+\[
+ [x^a]\bigl(\sin(k\theta)\theta^{2a-1}\bigr)=k.
+\] This proves (15), with a nonzero coefficient. \(\square\)
+
+Now put \(t=k-3=s-2\). The hypothesis \(k\ge5\) is exactly what ensures
+\(t-1\ge1\), so Lemma 5.1 applies to all three coefficients in (13).
+Their products have no pole worse than \(M^{-2}\), and have degree at
+most \(4t-2\). Multiplication by \((n+1)^s=(M/k)^s\) clears all possible
+poles. The degree is at most \[
+ s+4t-2=5(k-3).
+\] By (15), the coefficient at that degree is \[
+ -k^{4t}\bigl(b_t^2-b_{t-1}b_{t+1}\bigr)=L_k.
+\]
+
+It remains to prove that this coefficient does not vanish. Put
+\(u_\nu=(\pi\nu)^{-2}\). Because \(t\ge2\), all sums below converge
+absolutely, and (14) gives the exact identity \[
+ b_{t-1}b_{t+1}-b_t^2
+ =4\sum_{1\le a<b}u_a^{t-1}u_b^{t-1}(u_a-u_b)^2>0.
+ \tag{17}
+\] Every term is nonnegative, and already the term \((a,b)=(1,2)\) is
+positive. This proves (2) and proves that the degree is exact. No finite
+computation is needed for this strict inequality.
+
+Finally, apply (11) with \(r=3\). Reflection preserves degree, and the
+leading coefficient changes by \[
+ (-1)^{s+K+5(k-3)}=(-1)^K,
+\] because \(s+5(k-3)=6k-16\) is even. This proves (3) and completes
+Theorem 1. \(\square\)
+
+\subsection{6. Boundary tests and exact
+verification}\label{boundary-tests-and-exact-verification}
+
+At the smallest permitted parameter \(k=5\), the two residues coincide.
+The quotient formula gives the following exact polynomial: \[
+ \begin{split}
+ F_{5,3}(n)={}&\frac{125}{3024}(n+1)^2(n+2)^2(2n+3)^2\\
+ &\quad\cdot\bigl(500n^4+3000n^3+5125n^2+1875n-1092\bigr).
+ \end{split}
+ \tag{18}
+\] It has degree 10, leading coefficient \(15625/189\), and value
+\(-1625\) at \(n=0\), equal to the original \(3\times3\) determinant.
+Its reflection symmetry is \(F_{5,3}(n)=F_{5,3}(-n-3)\), as required.
+
+The lower bound on \(k\) must not be dropped. The excluded pair
+\(k=4,j=3\) has degree 6, not \(5(k-3)=5\); it is the reflected residue
+of \(j=2\). This agrees with the printed small-parameter formulas in
+{[}WX19, Theorem 6{]} and {[}C18, page 30{]}. It is not a counterexample
+to Theorem 1, whose range is \(k\ge5\).
+
+The accompanying standard-library program \texttt{verify\_cigler.py} performs
+exact integer, rational, and Laurent-polynomial arithmetic. It does not
+use floating point, a numerical zeta evaluator, or polynomial fitting.
+Its deterministic data files contain the following recorded checks.
+The complete suite was not rerun when preparing this research package;
+the counts below describe the included records and reproducible code.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Check
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Recorded range / count
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Symbolic residue-3 polynomials & 23 values of \(k\): \(5\) through
+\(24\), and \(32,40,50\) \\
+Original Hankel determinant comparisons & 60, for \(5\le k\le12\),
+\(0\le n\le3\), both distinct target residues \\
+Independent remainder-determinant comparisons & 429, for
+\(5\le k\le24\), \(-4\le n\le6\), both distinct target residues \\
+General-\(j\) quotient comparisons & 267, for \(2\le k\le18\), every
+\(1\le j\le\lfloor(k+1)/2\rfloor\), \(0\le n\le2\) \\
+Supplementary \(k=16\) certificate & All 452 values and both Newton
+coefficient lists reproduced \\
+Empty Hankel determinant & Checked to equal 1 \\
+\end{longtable}
+
+The negative-index checks use the algebraic remainder determinant, never
+a negative-size Hankel determinant. They include \(n=-1\), where the raw
+quotient has a zero denominator but its polynomial extension is
+well-defined. The symbolic check constructs the coefficients of
+\(\binom{M+a}{2a+1}\) as polynomial products and carries out formal
+series division, independently of the trigonometric derivation of their
+top degree.
+
+\subsection{7. Stronger theorem: the full stated residue-degree
+range}\label{stronger-theorem-the-full-stated-residue-degree-range}
+
+The same construction proves the following generalization of the \(j=3\)
+case.
+
+\textbf{Theorem 7.1.} Let \(j\ge1\) and \(k\ge2j-1\) be integers. For
+every \(n\ge0\), the two signed sequences in residues \(j\) and
+\(k+1-j\) agree with polynomials of exact degree \[
+ (2j-1)(k-j).
+ \tag{19}
+\] For \(k\ge2\), set \[
+ d=j-1,\qquad t=k-j,\qquad m_0=k-2j+2.
+\] If \(d\ge1\), the leading coefficient of \(F_{k,j}\) is \[
+ \boxed{\ (-1)^{kd}k^{2dt}
+ \det\bigl(b_{m_0+a+b}\bigr)_{0\le a,b<d}.\ }
+ \tag{20}
+\] The determinant in (20) is strictly positive. For \(d=0\), the
+determinant is interpreted as 1, and the leading coefficient is 1.
+
+\emph{Proof.} The case \(k=j=1\) is immediate from the excursion moments
+in Lemma 2.1: \(D_{2,0}(N)=1\). Suppose henceforth that \(k\ge2\).
+
+Take \(N=kn+j\), \(\ell=kn+s=M-1\), and again use \(p=P_\ell\) and
+\(q=P_{kn+2s+1}\). Replace the columns starting at \(P_\ell\) by \[
+ p,xp,\ldots,x^{s-j}p
+\] and the columns starting at \(q\) by \[
+ q,xq,\ldots,x^{j-2}q.
+\] For \(j=1\), the second list is empty. Each replacement is a
+unit-triangular column operation: the smallest required index in the
+first list is \(\ell-(s-j)=N\); in the second list it is
+\(kn+2s+1-(j-2)=kn+2s-j+3\), which is in the remaining right-hand
+window. The upper bounds on required indices are exactly the columns
+being replaced. Thus no polynomial outside the original window is
+introduced.
+
+After removal of root-row signs, the surviving \(s\) root columns are \[
+ P_j,\ldots,P_{s-1},-P_{j-1},\ldots,-P_0.
+\] Their determinant relative to \(V(\alpha)\) has sign \[
+ (-1)^{j+j(s-j)+\binom j2}.
+\] Moving the rightmost \(j\) root columns across the \(s-j+1=s-d\)
+columns made from \(p\) has sign \((-1)^{j(s-j+1)}\). The combined sign
+is therefore \((-1)^{\binom j2}\).
+
+Divide the lower coefficient block by \(p\), modulo \(x^s\), just as in
+Lemma 4.1. Its first \(s-d\) columns become coordinate vectors, while
+its last \(d\) columns become \(h,xh,\ldots,x^{d-1}h\), where \(h=q/p\).
+Thus the exact quotient identity is \[
+ F_{k,j}(n)=(-1)^{\binom j2}(n+1)^s
+ \det\bigl(h_{t+a-b}(k,M)\bigr)_{0\le a,b<d}.
+ \tag{21}
+\] For \(d=0\), it gives \(F_{k,1}(n)=(n+1)^s\), with the asserted exact
+degree.
+
+For \(d\ge1\), the least coefficient index in (21) is \[
+ t-(d-1)=m_0=k-2j+2\ge1.
+\] Therefore Lemma 5.1 applies to every entry. Each determinant term has
+a possible pole of order at most \(d\), cleared by \(M^s\) because
+\(s\ge d\). Its degree in \(M\) is at most \[
+ \sum_{a=0}^{d-1}\bigl(2(t+a-\sigma(a))-1\bigr)=d(2t-1)
+\] for every permutation \(\sigma\). Since \(s=t+d\), the total degree
+is at most \[
+ s+d(2t-1)=(2d+1)t=(2j-1)(k-j).
+\]
+
+The coefficient at this degree in the inner determinant is \[
+ (-1)^{d(k+1)}k^d\det(b_{t+a-b})_{0\le a,b<d}.
+\] Reversing its columns gives \[
+ \det(b_{t+a-b})=(-1)^{\binom d2}
+                  \det(b_{m_0+a+b}).
+\] Combining this sign with \((-1)^{\binom{d+1}{2}}\) from (21), and
+replacing \(M\) by \(k(n+1)\), gives exactly (20). The sign
+simplification is \[
+ \binom{d+1}{2}+d(k+1)+\binom d2\equiv kd\pmod2.
+\]
+
+To prove strict positivity, let \(v=(v_0,\ldots,v_{d-1})\in\mathbb R^d\)
+be nonzero. Formula (14) yields \[
+ \sum_{a,b=0}^{d-1}v_av_b b_{m_0+a+b}
+ =2\sum_{\nu\ge1}u_\nu^{m_0}
+      \left(\sum_{a=0}^{d-1}v_a u_\nu^a\right)^2>0.
+ \tag{22}
+\] The series converges since \(m_0\ge1\) and the polynomial in
+parentheses is bounded on the bounded set of points \(u_\nu\). A nonzero
+polynomial has only finitely many real zeros, whereas the \(u_\nu\) are
+infinitely many distinct positive numbers. Hence at least one summand is
+positive. This proves that the matrix in (20) is positive definite, so
+its determinant is strictly positive. The degree bound is consequently
+attained.
+
+Finally, (11) transfers the same exact degree to residue \(k+1-j\). This
+proves (19) throughout its stated range. \(\square\)
+
+\subsection{8. Hypotheses, scope, and attribution}\label{verification-audit-and-provenance}
+
+\textbf{Determinant convention.} The coefficient sequence is \(C^{2k}\),
+the shift is zero, and the Hankel size is exactly \(kn+r\). The sign is
+\((-1)^{n\binom{k}{2}}\). Theorem 1 treats both specified residues and
+all \(n\ge0\), with no exceptional \(k\ge5\). The case \(k=5\) is
+included once, not assumed to consist of two different residues.
+
+\textbf{Theorem hypotheses.} The base polynomials are monic and
+orthonormal for the explicitly constructed functional, whose norms are
+all 1. The modifying polynomial is monic of even degree. Its simple
+nonzero roots are distinct from the confluent point 0, so (7) is
+nonzero. Series division uses \(M=k(n+1)\ne0\) in the target range. The
+only analytic input is the classical cotangent expansion; it is used
+inside its disk of convergence to identify coefficients, and then as a
+formal coefficient identity. Every sum in the strict-positivity argument
+converges.
+
+\textbf{Exactness.} The positive coefficient in (17), rather than finite
+interpolation or a proposed degree bound, establishes exact degree. The
+algebraic negative-index extension is used solely for the proved
+polynomial reflection identity. No negative-size Hankel determinant is
+used.
+
+\textbf{Scope.} Theorem 1 covers the stated residue-three case.
+Theorem 7.1 further proves the full stated \(j\)-range in {[}C23,
+equation (19){]}. The argument does not assert formulas for arbitrary
+shifts, odd Catalan powers, or Narayana-parameter deformations.
+
+\textbf{Method attribution.} The moment-functional construction,
+determinant reduction, polynomiality, and reflection form the preliminary
+framework and are included with proofs. The classical moment-modification
+identity is attributed to {[}K21{]} in Section 2. The higher-rank quotient
+minor and the strictly positive moment determinant supply the uniform
+exact-degree argument. The supplementary finite certificate is not a
+premise of this proof.
+
+\textbf{Literature scope.} {[}C23{]} and {[}WX19{]} identify the target
+and known finite range. {[}C18{]} supplies the neighboring Narayana
+statements. {[}K21{]} gives the classical determinant transformation.
+{[}H26{]} treats shifts \(-m,1-m,2-m,3-m\), which do not give the
+present unshifted target for \(m=k\ge5\). The additional 2026 source
+{[}CS26, Theorem 1.4{]}, specialized to its parameters
+\(k_{\rm CS}=k-1,m=k-1,c=2\), gives the neighboring residue-0 and
+residue-1 formulas; it does not state the residue-3 degree theorem. No
+pre-existing uniform proof of the exact residue-degree statement was
+identified in these checked sources. This is a limited literature check,
+not a worldwide priority claim.
+
+\paragraph{AI assistance.} This work was prepared with AI assistance.
+No independent human peer-review or proof-assistant certification is
+claimed.
+
+\section{References}\label{citation}
+\begingroup\small\raggedright
+\setlength{\parskip}{3pt}
+
+\textbf{{[}C23{]}} Johann Cigler, \emph{Some experimental observations
+about Hankel determinants of convolution powers of Catalan numbers},
+arXiv:2308.07642v2 (2023). Equations (1)--(2), page 1; equation (16) and
+Conjecture 6, equation (19), page 4. This is the exact source of the
+target and its range.
+
+\textbf{{[}WX19{]}} Ying Wang and Guoce Xin, \emph{Hankel determinants
+for convolution powers of Catalan numbers}, arXiv:1811.00248v2;
+\emph{Discrete Mathematics} 342 (2019), 2694--2716. Conjecture 10, page
+3, and Theorem 11, page 4. Only the specializations in the range
+specified by {[}C23{]} are used here.
+
+\textbf{{[}C18{]}} Johann Cigler, \emph{Catalan numbers, Hankel
+determinants and Fibonacci polynomials}, arXiv:1801.05608v3 (2018).
+Conjecture 7.7, equation (7.13), page 30. This concerns a neighboring problem, not
+the residue-three statement.
+
+\textbf{{[}K21{]}} Christian Krattenthaler, \emph{Hankel determinants of
+linear combinations of moments of orthogonal polynomials, II},
+arXiv:2101.04225v5 (2021). Theorem 1 and Proposition 5. DOI:
+10.1007/s11139-021-00514-8.
+
+\textbf{{[}H26{]}} Guo-Niu Han, \emph{Hankel Determinants for
+Convolution Powers of Narayana Polynomials}, arXiv:2512.12603v1;
+\emph{Electronic Journal of Combinatorics} 33(2) (2026), P2.42. Theorems
+4--7. DOI: 10.37236/14995.
+
+\textbf{{[}CS26{]}} Shane Chern and Wenle Shi, \emph{Hankel determinants
+of Catalan-like sequences}, arXiv:2608.27208v1 (2026). Theorem 1.4, page
+3.
+
+\textbf{{[}DLMF{]}} NIST Digital Library of Mathematical Functions,
+equations 4.22.3 (cotangent partial fractions) and 4.19.6 (cotangent
+Laurent coefficients).
+
+\endgroup
+\end{document}

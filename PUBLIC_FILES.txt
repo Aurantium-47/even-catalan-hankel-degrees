@@ -1,0 +1,11 @@
+README.md
+main.tex
+main.pdf
+verify_cigler.py
+exact_checks.json
+exact_polynomials.json
+k16_certificate.json
+REFERENCES.md
+RIGHTS.md
+PUBLIC_FILES.txt
+SHA256SUMS.txt
